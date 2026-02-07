@@ -1,0 +1,9 @@
+{
+  "name": "fyrmify-landing",
+  "version": "1.0.0",
+  "description": "Fyrmify landing page with email collection",
+  "type": "module",
+  "dependencies": {
+    "resend": "^3.0.0"
+  }
+}
