@@ -1,6 +1,19 @@
 import { Resend } from 'resend';
+import { google } from 'googleapis';
 
 const resend = new Resend('re_F6WTH3fZ_FiQPwTThaxN9E9FFmdPxcXVX');
+
+// Google Sheets setup
+const auth = new google.auth.GoogleAuth({
+  credentials: {
+    client_email: process.env.GOOGLE_CLIENT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  },
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+const sheets = google.sheets({ version: 'v4', auth });
+const SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
 export default async function handler(req, res) {
   // CORS headers
@@ -25,7 +38,21 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Envoyer l'email de bienvenue
+    // 1. Sauvegarder dans Google Sheets
+    const now = new Date().toISOString();
+    
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: 'Sheet1!A:C',
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [[email, now, 'Subscribed']],
+      },
+    });
+
+    console.log('✅ Email saved to Google Sheets:', email);
+
+    // 2. Envoyer l'email de bienvenue
     const data = await resend.emails.send({
       from: 'Edouard @ Fyrmify <edouard@fyrmify.com>',
       to: email,
@@ -40,18 +67,18 @@ Talk soon!
 Edouard`
     });
 
-    console.log('New subscriber:', email, 'Email ID:', data.id);
+    console.log('✅ Email sent successfully:', email, 'ID:', data.id);
 
     return res.status(200).json({ 
       success: true, 
-      message: 'Email sent successfully!',
+      message: 'Email sent and saved successfully!',
       id: data.id 
     });
 
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('❌ Error:', error);
     return res.status(500).json({ 
-      error: 'Failed to send email',
+      error: 'Failed to process subscription',
       details: error.message 
     });
   }
