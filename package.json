@@ -4,6 +4,7 @@
   "description": "Fyrmify landing page with email collection",
   "type": "module",
   "dependencies": {
-    "resend": "^3.0.0"
+    "resend": "^3.0.0",
+    "googleapis": "^128.0.0"
   }
 }
