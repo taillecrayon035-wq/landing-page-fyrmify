@@ -188,79 +188,35 @@
 
         .counter-flip { animation: flipDown 0.6s ease-out; }
 
-        /* Carousel */
-        .carousel {
+        /* Screenshots grid */
+        .screenshots {
             margin-top: 2.5rem;
-            max-width: 680px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            max-width: 820px;
             margin-left: auto;
             margin-right: auto;
             animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
-        .carousel-image-wrap {
+        .screenshot-item {}
+
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            display: block;
             border: 2px solid var(--charcoal);
             border-radius: 0.5rem;
-            overflow: hidden;
-            line-height: 0;
         }
 
-        .carousel-track { }
-
-        .carousel-slides { position: relative; }
-
-        .carousel-slide { display: none; }
-
-        .carousel-slide.active { display: block; }
-
-        .carousel-slide img { width: 100%; height: auto; display: block; }
-
-        .carousel-caption {
-            margin-top: 1rem;
-            font-size: 0.95rem;
-            color: var(--charcoal);
-            font-weight: 600;
+        .screenshot-caption {
+            margin-top: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--earth);
+            font-weight: 500;
             text-align: center;
         }
-
-        .carousel-nav {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 0.8rem;
-        }
-
-        .carousel-btn {
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            border: 1.5px solid var(--clay);
-            background: var(--white);
-            color: var(--charcoal);
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .carousel-btn:hover {
-            background: var(--charcoal);
-            color: var(--white);
-            border-color: var(--charcoal);
-        }
-
-        .carousel-dots { display: flex; gap: 0.45rem; }
-
-        .carousel-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--clay);
-            transition: background 0.2s;
-            cursor: pointer;
-        }
-
-        .carousel-dot.active { background: var(--charcoal); }
 
         /* Platforms */
         .platforms {
@@ -354,28 +310,23 @@
                 Join <span class="counter-wrapper"><span id="traderCount" class="animated-counter">171</span></span>+ traders preparing for tax season
             </p>
 
-            <!-- Carousel -->
-            <div class="carousel">
-                <div class="carousel-image-wrap">
-                    <div class="carousel-track">
-                        <div class="carousel-slides" id="carouselSlides">
-                            <div class="carousel-slide active"><img src="im1.png" alt="Overview"></div>
-                            <div class="carousel-slide"><img src="im2.png" alt="Declaration"></div>
-                            <div class="carousel-slide"><img src="im3.png" alt="Airdrop points"></div>
-                            <div class="carousel-slide"><img src="im4.png" alt="Share"></div>
-                        </div>
-                    </div>
+            <!-- Screenshots -->
+            <div class="screenshots">
+                <div class="screenshot-item">
+                    <img src="im1.png" alt="Overview">
+                    <p class="screenshot-caption">Gain a comprehensive view of your trading performance</p>
                 </div>
-                <p class="carousel-caption" id="carouselCaption">Gain a comprehensive view of your trading performance</p>
-                <div class="carousel-nav">
-                    <button class="carousel-btn" id="carouselPrev">&#8592;</button>
-                    <div class="carousel-dots">
-                        <div class="carousel-dot active" data-index="0"></div>
-                        <div class="carousel-dot" data-index="1"></div>
-                        <div class="carousel-dot" data-index="2"></div>
-                        <div class="carousel-dot" data-index="3"></div>
-                    </div>
-                    <button class="carousel-btn" id="carouselNext">&#8594;</button>
+                <div class="screenshot-item">
+                    <img src="im2.png" alt="Declaration">
+                    <p class="screenshot-caption">Identify your tax obligations in your jurisdiction in two clicks</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="im3.png" alt="Airdrop points">
+                    <p class="screenshot-caption">Monitor your airdrop points balance in real time</p>
+                </div>
+                <div class="screenshot-item">
+                    <img src="im4.png" alt="Share">
+                    <p class="screenshot-caption">Share your results with your friends</p>
                 </div>
             </div>
 
@@ -458,29 +409,7 @@
         }
         setTimeout(() => { incrementCounter(); setTimeout(incrementCounter, 20000); }, 5000);
 
-        // Carousel
-        const captions = [
-            "Gain a comprehensive view of your trading performance",
-            "Identify your tax obligations in your jurisdiction in two clicks",
-            "Monitor your airdrop points balance in real time",
-            "Share your results with your friends"
-        ];
-        let currentSlide = 0;
-        const slides = document.getElementById('carouselSlides');
-        const captionEl = document.getElementById('carouselCaption');
-        const dots = document.querySelectorAll('.carousel-dot');
 
-        function goToSlide(n) {
-            document.querySelectorAll('.carousel-slide').forEach(s => s.classList.remove('active'));
-            currentSlide = (n + 4) % 4;
-            document.querySelectorAll('.carousel-slide')[currentSlide].classList.add('active');
-            captionEl.textContent = captions[currentSlide];
-            dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
-        }
-
-        document.getElementById('carouselPrev').addEventListener('click', () => goToSlide(currentSlide - 1));
-        document.getElementById('carouselNext').addEventListener('click', () => goToSlide(currentSlide + 1));
-        dots.forEach(d => d.addEventListener('click', () => goToSlide(+d.dataset.index)));
     </script>
 </body>
 </html>
