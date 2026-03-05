@@ -204,14 +204,13 @@
             line-height: 0;
         }
 
-        .carousel-track { overflow: hidden; }
+        .carousel-track { }
 
-        .carousel-slides {
-            display: flex;
-            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-        }
+        .carousel-slides { position: relative; }
 
-        .carousel-slide { min-width: 100%; }
+        .carousel-slide { display: none; }
+
+        .carousel-slide.active { display: block; }
 
         .carousel-slide img { width: 100%; height: auto; display: block; }
 
@@ -360,7 +359,7 @@
                 <div class="carousel-image-wrap">
                     <div class="carousel-track">
                         <div class="carousel-slides" id="carouselSlides">
-                            <div class="carousel-slide"><img src="im1.png" alt="Overview"></div>
+                            <div class="carousel-slide active"><img src="im1.png" alt="Overview"></div>
                             <div class="carousel-slide"><img src="im2.png" alt="Declaration"></div>
                             <div class="carousel-slide"><img src="im3.png" alt="Airdrop points"></div>
                             <div class="carousel-slide"><img src="im4.png" alt="Share"></div>
@@ -464,7 +463,7 @@
             "Gain a comprehensive view of your trading performance",
             "Identify your tax obligations in your jurisdiction in two clicks",
             "Monitor your airdrop points balance in real time",
-            "Share your results with your accountant or your friends"
+            "Share your results with your friends"
         ];
         let currentSlide = 0;
         const slides = document.getElementById('carouselSlides');
@@ -472,8 +471,9 @@
         const dots = document.querySelectorAll('.carousel-dot');
 
         function goToSlide(n) {
+            document.querySelectorAll('.carousel-slide').forEach(s => s.classList.remove('active'));
             currentSlide = (n + 4) % 4;
-            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+            document.querySelectorAll('.carousel-slide')[currentSlide].classList.add('active');
             captionEl.textContent = captions[currentSlide];
             dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
         }
