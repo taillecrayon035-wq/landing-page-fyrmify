@@ -465,21 +465,28 @@
 
         /* Carousel */
         .carousel {
-            margin-top: 3rem;
+            margin-top: 2.5rem;
             position: relative;
-            max-width: 700px;
+            max-width: 680px;
             margin-left: auto;
             margin-right: auto;
         }
 
+        .carousel-card {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(45, 45, 45, 0.13);
+            background: var(--white);
+        }
+
         .carousel-track {
             overflow: hidden;
-            border-radius: 1.2rem;
         }
 
         .carousel-slides {
             display: flex;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .carousel-slide {
@@ -490,57 +497,62 @@
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 1.2rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-        }
-
-        .carousel-caption {
-            margin-top: 1.2rem;
-            font-size: 1rem;
-            color: var(--earth);
-            font-weight: 400;
-            text-align: center;
-            min-height: 1.5rem;
-        }
-
-        .carousel-nav {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.2rem;
         }
 
         .carousel-btn {
-            width: 40px;
-            height: 40px;
+            position: absolute;
+            top: 45%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 1.5px solid var(--clay);
-            background: var(--white);
+            border: none;
+            background: rgba(255,255,255,0.92);
             color: var(--charcoal);
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            z-index: 2;
         }
 
         .carousel-btn:hover {
             background: var(--charcoal);
             color: var(--white);
-            border-color: var(--charcoal);
+        }
+
+        #carouselPrev { left: 0.75rem; }
+        #carouselNext { right: 0.75rem; }
+
+        .carousel-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 1.2rem;
+            background: var(--white);
+            gap: 1rem;
+        }
+
+        .carousel-caption {
+            font-size: 0.9rem;
+            color: var(--earth);
+            font-weight: 400;
+            text-align: left;
+            flex: 1;
         }
 
         .carousel-dots {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            flex-shrink: 0;
         }
 
         .carousel-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--clay);
             transition: background 0.2s;
@@ -585,14 +597,28 @@
             
             <!-- Carousel -->
             <div class="carousel" id="carousel">
-                <div class="carousel-track">
-                    <div class="carousel-slides" id="carouselSlides">
-                        <div class="carousel-slide">
-                            <img src="im1.png" alt="Vue d'ensemble">
+                <div class="carousel-card">
+                    <div class="carousel-track">
+                        <div class="carousel-slides" id="carouselSlides">
+                            <div class="carousel-slide"><img src="im1.png" alt="Overview"></div>
+                            <div class="carousel-slide"><img src="im2.png" alt="Declaration"></div>
+                            <div class="carousel-slide"><img src="im3.png" alt="Airdrop points"></div>
+                            <div class="carousel-slide"><img src="im4.png" alt="Share"></div>
                         </div>
-                        <div class="carousel-slide">
-                            <img src="im2.png" alt="Déclaration">
+                    </div>
+                    <button class="carousel-btn" id="carouselPrev">&#8592;</button>
+                    <button class="carousel-btn" id="carouselNext">&#8594;</button>
+                    <div class="carousel-footer">
+                        <p class="carousel-caption" id="carouselCaption">Get a complete overview of your results</p>
+                        <div class="carousel-dots" id="carouselDots">
+                            <div class="carousel-dot active" data-index="0"></div>
+                            <div class="carousel-dot" data-index="1"></div>
+                            <div class="carousel-dot" data-index="2"></div>
+                            <div class="carousel-dot" data-index="3"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
                         <div class="carousel-slide">
                             <img src="im3.png" alt="Points airdrop">
                         </div>
@@ -743,10 +769,10 @@
 
         // Carousel
         const captions = [
-            "Ayez une vision d'ensemble sur vos résultats",
-            "Regardez en 2 clics ce que vous devez déclarer dans votre pays",
-            "Surveillez en temps réel votre nombre de points pour les airdrops",
-            "Partagez vos résultats avec vos amis"
+            "Get a complete overview of your results",
+            "See what you need to declare in your country in just 2 clicks",
+            "Track your airdrop points in real time",
+            "Share your results with friends"
         ];
         let currentSlide = 0;
         const slides = document.getElementById('carouselSlides');
