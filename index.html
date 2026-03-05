@@ -281,6 +281,83 @@
             .email-form { flex-direction: column; }
             .platform-badges { grid-template-columns: repeat(2, auto); }
         }
+
+        /* Lightbox */
+        .screenshot-item {
+            cursor: zoom-in;
+            position: relative;
+        }
+
+        .screenshot-item::after {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+        }
+
+        .screenshot-item:hover::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .screenshot-item:hover img {
+            opacity: 0.85;
+        }
+
+        .screenshot-item img {
+            transition: opacity 0.2s;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            padding: 2rem;
+        }
+
+        .lightbox.open {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
     </style>
 </head>
 <body>
@@ -362,6 +439,13 @@
         </div>
     </section>
 
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+        <img id="lightboxImg" src="" alt="">
+    </div>
+
     <footer>
         <p>© 2026 Fyrmify. All rights reserved.</p>
     </footer>
@@ -408,6 +492,29 @@
         }
         setTimeout(() => { incrementCounter(); setTimeout(incrementCounter, 20000); }, 5000);
 
+
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.screenshot-item img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('open');
+            });
+        });
+
+        document.getElementById('lightboxClose').addEventListener('click', e => {
+            e.stopPropagation();
+            lightbox.classList.remove('open');
+        });
+
+        lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') lightbox.classList.remove('open');
+        });
 
     </script>
 </body>
