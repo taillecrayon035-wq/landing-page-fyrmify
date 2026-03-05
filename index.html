@@ -198,9 +198,10 @@
         }
 
         .carousel-image-wrap {
-            border-radius: 1.2rem;
+            border: 2px solid var(--charcoal);
+            border-radius: 0.5rem;
             overflow: hidden;
-            box-shadow: 0 10px 35px rgba(45,45,45,0.12);
+            line-height: 0;
         }
 
         .carousel-track { overflow: hidden; }
@@ -217,8 +218,8 @@
         .carousel-caption {
             margin-top: 1rem;
             font-size: 0.95rem;
-            color: var(--earth);
-            font-weight: 400;
+            color: var(--charcoal);
+            font-weight: 600;
             text-align: center;
         }
 
@@ -366,7 +367,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="carousel-caption" id="carouselCaption">Get a complete overview of your results</p>
+                <p class="carousel-caption" id="carouselCaption">Gain a comprehensive view of your trading performance</p>
                 <div class="carousel-nav">
                     <button class="carousel-btn" id="carouselPrev">&#8592;</button>
                     <div class="carousel-dots">
@@ -460,10 +461,10 @@
 
         // Carousel
         const captions = [
-            "Get a complete overview of your results",
-            "See what you need to declare in your country in just 2 clicks",
-            "Track your airdrop points in real time",
-            "Share your results with friends"
+            "Gain a comprehensive view of your trading performance",
+            "Identify your tax obligations in your jurisdiction in two clicks",
+            "Monitor your airdrop points balance in real time",
+            "Export and share your full report with your accountant"
         ];
         let currentSlide = 0;
         const slides = document.getElementById('carouselSlides');
