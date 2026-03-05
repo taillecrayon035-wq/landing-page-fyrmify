@@ -462,6 +462,112 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Carousel */
+        .carousel {
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        .carousel-slide { display: none; }
+        .carousel-slide.active { display: block; }
+
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 0.75rem;
+            cursor: zoom-in;
+            transition: opacity 0.15s;
+        }
+
+        .carousel-slide img:hover { opacity: 0.9; }
+
+        .carousel-caption {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 0.9rem;
+        }
+
+        .carousel-btn {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1.5px solid var(--clay);
+            background: var(--white);
+            color: var(--charcoal);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .carousel-btn:hover {
+            background: var(--charcoal);
+            color: var(--white);
+            border-color: var(--charcoal);
+        }
+
+        .carousel-dots { display: flex; gap: 0.5rem; }
+
+        .carousel-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--clay);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .carousel-dot.active { background: var(--charcoal); }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+
+        .lightbox.open { display: flex; }
+
+        .lightbox img {
+            max-width: 96vw;
+            max-height: 96vh;
+            object-fit: contain;
+            border-radius: 0.5rem;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.2rem; right: 1.2rem;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover { background: rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
@@ -495,6 +601,25 @@
                 Join <span class="counter-wrapper"><span id="traderCount" class="animated-counter">171</span></span>+ traders preparing for tax season
             </p>
             
+            <!-- Carousel -->
+            <div class="carousel">
+                <div class="carousel-slide active"><img src="im1.png" alt="Overview"></div>
+                <div class="carousel-slide"><img src="im2.png" alt="Declaration"></div>
+                <div class="carousel-slide"><img src="im3.png" alt="Airdrop points"></div>
+                <div class="carousel-slide"><img src="im4.png" alt="Share"></div>
+                <p class="carousel-caption" id="carouselCaption">Gain a comprehensive view of your trading performance</p>
+                <div class="carousel-nav">
+                    <button class="carousel-btn" id="carouselPrev">&#8592;</button>
+                    <div class="carousel-dots">
+                        <div class="carousel-dot active" data-index="0"></div>
+                        <div class="carousel-dot" data-index="1"></div>
+                        <div class="carousel-dot" data-index="2"></div>
+                        <div class="carousel-dot" data-index="3"></div>
+                    </div>
+                    <button class="carousel-btn" id="carouselNext">&#8594;</button>
+                </div>
+            </div>
+
             <div class="platforms">
                 <div class="platforms-label">Currently supporting</div>
                 <div class="platform-badges">
@@ -528,6 +653,12 @@
     </section>
 
     <!-- Footer -->
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+        <img id="lightboxImg" src="" alt="">
+    </div>
+
     <footer>
         <p>© 2026 Fyrmify. All rights reserved.</p>
     </footer>
@@ -620,6 +751,49 @@
                 }
             });
         });
+
+        // Carousel
+        const captions = [
+            "Gain a comprehensive view of your trading performance",
+            "Identify your tax obligations in your jurisdiction in two clicks",
+            "Monitor your airdrop points balance in real time",
+            "Share your results with your friends"
+        ];
+        let currentSlide = 0;
+        const captionEl = document.getElementById('carouselCaption');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function goToSlide(n) {
+            document.querySelectorAll('.carousel-slide').forEach(s => s.classList.remove('active'));
+            currentSlide = (n + 4) % 4;
+            document.querySelectorAll('.carousel-slide')[currentSlide].classList.add('active');
+            captionEl.textContent = captions[currentSlide];
+            dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+        }
+
+        document.getElementById('carouselPrev').addEventListener('click', () => goToSlide(currentSlide - 1));
+        document.getElementById('carouselNext').addEventListener('click', () => goToSlide(currentSlide + 1));
+        dots.forEach(d => d.addEventListener('click', () => goToSlide(+d.dataset.index)));
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.carousel-slide img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('open');
+            });
+        });
+
+        document.getElementById('lightboxClose').addEventListener('click', e => {
+            e.stopPropagation();
+            lightbox.classList.remove('open');
+        });
+
+        lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
     </script>
 </body>
 </html>
