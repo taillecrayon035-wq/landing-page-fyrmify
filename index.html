@@ -462,6 +462,94 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Carousel */
+        .carousel {
+            margin-top: 3rem;
+            position: relative;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .carousel-track {
+            overflow: hidden;
+            border-radius: 1.2rem;
+        }
+
+        .carousel-slides {
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .carousel-caption {
+            margin-top: 1.2rem;
+            font-size: 1rem;
+            color: var(--earth);
+            font-weight: 400;
+            text-align: center;
+            min-height: 1.5rem;
+        }
+
+        .carousel-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .carousel-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1.5px solid var(--clay);
+            background: var(--white);
+            color: var(--charcoal);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .carousel-btn:hover {
+            background: var(--charcoal);
+            color: var(--white);
+            border-color: var(--charcoal);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .carousel-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--clay);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .carousel-dot.active {
+            background: var(--charcoal);
+        }
     </style>
 </head>
 <body>
@@ -495,6 +583,38 @@
                 Join <span class="counter-wrapper"><span id="traderCount" class="animated-counter">171</span></span>+ traders preparing for tax season
             </p>
             
+            <!-- Carousel -->
+            <div class="carousel" id="carousel">
+                <div class="carousel-track">
+                    <div class="carousel-slides" id="carouselSlides">
+                        <div class="carousel-slide">
+                            <img src="im1.png" alt="Vue d'ensemble">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="im2.png" alt="Déclaration">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="im3.png" alt="Points airdrop">
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="im4.png" alt="Partage">
+                        </div>
+                    </div>
+                </div>
+                <p class="carousel-caption" id="carouselCaption">Ayez une vision d'ensemble sur vos résultats</p>
+                <div class="carousel-nav">
+                    <button class="carousel-btn" id="carouselPrev">&#8592;</button>
+                    <div class="carousel-dots" id="carouselDots">
+                        <div class="carousel-dot active" data-index="0"></div>
+                        <div class="carousel-dot" data-index="1"></div>
+                        <div class="carousel-dot" data-index="2"></div>
+                        <div class="carousel-dot" data-index="3"></div>
+                    </div>
+                    <button class="carousel-btn" id="carouselNext">&#8594;</button>
+                </div>
+            </div>
+
+
             <div class="platforms">
                 <div class="platforms-label">Currently supporting</div>
                 <div class="platform-badges">
@@ -620,6 +740,30 @@
                 }
             });
         });
+
+        // Carousel
+        const captions = [
+            "Ayez une vision d'ensemble sur vos résultats",
+            "Regardez en 2 clics ce que vous devez déclarer dans votre pays",
+            "Surveillez en temps réel votre nombre de points pour les airdrops",
+            "Partagez vos résultats avec vos amis"
+        ];
+        let currentSlide = 0;
+        const slides = document.getElementById('carouselSlides');
+        const captionEl = document.getElementById('carouselCaption');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function goToSlide(n) {
+            currentSlide = (n + 4) % 4;
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+            captionEl.textContent = captions[currentSlide];
+            dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+        }
+
+        document.getElementById('carouselPrev').addEventListener('click', () => goToSlide(currentSlide - 1));
+        document.getElementById('carouselNext').addEventListener('click', () => goToSlide(currentSlide + 1));
+        dots.forEach(d => d.addEventListener('click', () => goToSlide(+d.dataset.index)));
+
     </script>
 </body>
 </html>
