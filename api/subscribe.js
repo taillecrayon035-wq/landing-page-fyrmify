@@ -56,10 +56,10 @@ export default async function handler(req, res) {
     const data = await resend.emails.send({
       from: 'Edouard @ Fyrmify <edouard@fyrmify.com>',
       to: email,
-      subject: 'Congrats, you just retired your accountant',
+      subject: 'You just retired your accountant',
       text: `Hey!
 
-Congrats, you just took the first step to save yourself from dozens of sleepless nights and a serious Aspirin addiction during DeFi tax season.
+You just took the first step to save yourself from dozens of sleepless nights and a serious Aspirin addiction during DeFi tax season.
 
 We're building this to make your life actually easier. Got specific struggles or features you'd want to see? Just hit reply and tell us. We read EVERYTHING: your Reddit rants, your Twitter meltdowns, your Discord questions. It all helps us build a better tool.
 
